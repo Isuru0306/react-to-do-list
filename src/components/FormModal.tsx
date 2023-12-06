@@ -6,37 +6,27 @@ interface Props {
   show?: boolean;
   modalHeading?: string;
   children?: ReactNode;
+  onHide?: () => void;
+  onSave?: () => void;
 }
 
-function FormModal({ show = false, modalHeading, children }: Readonly<Props>) {
-  const [showModal, setShowModal] = useState(show);
-
-  const handleClose = () => {
-    setShowModal(false);
-  };
-
-  const handleSave = () => {
-    setShowModal(false);
-  };
-
+function FormModal({
+  show = false,
+  modalHeading,
+  children,
+  onHide,
+  onSave,
+}: Readonly<Props>) {
   return (
     <div style={{ display: "block", position: "initial" }}>
-      <Modal show={showModal} onHide={handleClose} centered size="lg">
+      <Modal show={show} onHide={onHide} centered size="lg">
         <Modal.Header closeButton>
           <Modal.Title>{modalHeading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>{children}</Modal.Body>
         <Modal.Footer>
-          <Button
-            text="Close"
-            color="btn btn-secondary"
-            onClick={handleClose}
-          />
-          <Button
-            text="Save Changes"
-            color="btn btn-primary"
-            onClick={handleSave}
-          />
+          <Button text="Close" color="btn btn-secondary" onClick={onHide} />
+          <Button text="Save" color="btn btn-primary" onClick={onSave} />
         </Modal.Footer>
       </Modal>
     </div>

@@ -1,16 +1,18 @@
 import Icon from "./Icon";
 
 interface Props {
-  icon: string;
-  color: string;
-  onClick: () => void;
+  title?:string;
+  icon?: string;
+  color?: string;
+  onClick?: () => void;
 }
 
-const Button = ({ icon, color, onClick }: Props) => {
+const Button = ({ title, icon, color, onClick }: Props) => {
   return (
-    <div className="flex items-center justify-center space-x-5">
+    <div className="">
       <button
-        className={`btn ${color} p-1 rounded-circle btn-sm focus-outline-none focus-ring-2 focus-ring-offset-2 focus-ring-primary`}
+        title={title}
+        className={`btn ${color} mx-0 p-1 rounded-circle btn-sm focus-outline-none focus-ring-2 focus-ring-offset-2 focus-ring-primary`}
         type="button"
         onClick={onClick}
       >

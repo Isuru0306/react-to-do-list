@@ -1,8 +1,8 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import { faEye, faEdit, faTrash, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 interface Props {
-  icon: string;
+  icon?: string;
 }
 
 const Icon = ({ icon }: Props) => {
@@ -17,6 +17,9 @@ const Icon = ({ icon }: Props) => {
       break;
     case "delete":
       selectedIcon = faTrash;
+      break;
+    case "complete":
+      selectedIcon = faCheck;
       break;
     default:
       selectedIcon = faEye;
