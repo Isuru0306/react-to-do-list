@@ -23,6 +23,7 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
     username: "",
     dueDate: "",
     dueTime: "",
+    status: "",
     started: false,
   });
 
@@ -33,7 +34,7 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
     dueTime: "",
   });
 
-  const handleChange = (fieldName: string, value: string | boolean) => {
+  const setCreateFormData = (fieldName: string, value: string | boolean) => {
     setFormData((prevData) => {
       setErrors((prevErrors) => ({
         ...prevErrors,
@@ -46,6 +47,17 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
       };
       return newData;
     });
+  };
+
+  const handleChange = (fieldName: string, value: string | boolean) => {
+    if (fieldName === "started") {
+      if (value) {
+        setCreateFormData("status", "START");
+      } else {
+        setCreateFormData("status", "NO START");
+      }
+    }
+    setCreateFormData(fieldName, value);
   };
 
   const validateForm = () => {
@@ -88,13 +100,19 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
       dispatch(
         createToDo({
           id: getRandomInt(1000, 9999),
-          status: "Not Start",
           ...formData,
         })
       );
 
       if (onSave) {
         onSave();
+        setFormData((prevData) => ({
+          ...prevData,
+          to_do_desc: "",
+          username: "",
+          dueDate: "",
+          dueTime: "",
+        }));
       }
     }
   };

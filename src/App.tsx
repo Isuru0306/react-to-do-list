@@ -32,7 +32,7 @@ function App() {
       <section className="vh-100">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
-            <div className="col col-lg-9 col-xl-7">
+            <div className="col col-lg-12 col-xl-10">
               <div className="card rounded-3">
                 <div className="card-body p-4">
                   <h2 className="text-center my-3 pb-3">To Do List</h2>
