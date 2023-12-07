@@ -1,18 +1,14 @@
+import { useSelector } from "react-redux";
 import ButtonCircle from "../components/ButtonCircle";
+import { RootState } from "../state/store";
 
 interface Props {
   headers?: string[];
-  lists?: {
-    no: number;
-    to_do_desc: string;
-    status: string;
-    username: string;
-    date: string;
-    time: string;
-  }[];
 }
 
-const Table = ({ headers, lists }: Props) => {
+const Table = ({ headers }: Props) => {
+  const toDoList = useSelector((state: RootState) => state.toDo);
+  const lists = toDoList.task_list;
   return (
     <table className="table mb-4">
       <thead>
@@ -25,14 +21,21 @@ const Table = ({ headers, lists }: Props) => {
         </tr>
       </thead>
       <tbody>
+        {lists?.length === 0 && (
+          <tr>
+            <th colSpan={7} className="text-center">
+              <p>No records available</p>
+            </th>
+          </tr>
+        )}
         {lists?.map((item, index) => (
-          <tr className="text-center" key={item.no}>
-            <th scope="row">{item.no}</th>
+          <tr className="text-center" key={index}>
+            <th scope="row">{item.id}</th>
             <td>{item.to_do_desc}</td>
             <td>{item.status}</td>
             <td>{item.username}</td>
-            <td>{item.date}</td>
-            <td>{item.time}</td>
+            <td>{item.dueDate}</td>
+            <td>{item.dueTime}</td>
             <td>
               <div className="row">
                 <div className="col-4 text-center">

@@ -5,13 +5,11 @@ import { useState } from "react";
 import Button from "./components/Button";
 import FormInput from "./components/FormInput";
 import Table from "./todo/Table";
-import FormModal from "./components/FormModal";
-import ToDoForm from "./todo/ToDoForm";
+import ToDoAddForm from "./todo/ToDoAddForm";
 function App() {
   const [showCreateModal, setShowCreateModal] = useState(false);
 
   const showCreateListModal = () => {
-    console.log("showCreateListModal");
     setShowCreateModal(true);
   };
 
@@ -23,35 +21,14 @@ function App() {
     setShowCreateModal(false);
   };
 
-  const dataList = [
-    {
-      no: 1,
-      to_do_desc: "Test Task1",
-      status: "pending",
-      username: "Isuru",
-      date: "06-12-2023",
-      time: "21:59PM",
-    },
-    {
-      no: 2,
-      to_do_desc: "Test Task2",
-      status: "Completed",
-      username: "Isuru1",
-      date: "06-12-2023",
-      time: "21:59PM",
-    },
-  ];
-
   return (
     <div>
-      <FormModal
+      <ToDoAddForm
         show={showCreateModal}
         modalHeading={"Add To Do List"}
         onHide={handleCloseModal}
         onSave={handleSaveModal}
-      >
-        <ToDoForm />
-      </FormModal>
+      />
       <section className="vh-100">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -86,7 +63,6 @@ function App() {
                       "Time",
                       "Actions",
                     ]}
-                    lists={dataList}
                   />
                 </div>
               </div>

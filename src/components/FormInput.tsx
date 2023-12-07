@@ -1,12 +1,18 @@
 import { ChangeEvent } from "react";
 
 interface Props {
+  value?: string;
   placeholder?: string;
   type?: string;
   onChange?: (value: string) => void;
 }
 
-const FormInput = ({ type = "text", placeholder = "", onChange }: Props) => {
+const FormInput = ({
+  value,
+  type = "text",
+  placeholder = "",
+  onChange,
+}: Props) => {
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = event.target.value;
     if (onChange) {
@@ -18,6 +24,7 @@ const FormInput = ({ type = "text", placeholder = "", onChange }: Props) => {
     <input
       type={type}
       className="form-control"
+      value={value}
       placeholder={placeholder}
       onChange={handleChange}
     />

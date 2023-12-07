@@ -1,8 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
-import { type } from "os";
+import ToDoListSlice from "./ToDoListSlice";
 
 export const store = configureStore({
-  reducer: {},
+  reducer: {
+    toDo: ToDoListSlice,
+  },
 });
 
 export type RootState = ReturnType<typeof store.getState>;
