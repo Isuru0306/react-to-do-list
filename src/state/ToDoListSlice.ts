@@ -36,8 +36,23 @@ const toDoTaskListSlice = createSlice({
         taskList[taskIndex] = updatedTask;
       }
     },
-    deleteToDo: (state) => {
-      console.log("deleteToDo");
+    deleteToDo: (state, actions) => {
+      const taskIdToDelete = actions.payload;
+      const taskList = state.task_list as {
+        id: number;
+        to_do_desc?: string;
+        status?: string;
+        username?: string;
+        dueDate?: string;
+        dueTime?: string;
+      }[];
+      const taskIndex = taskList.findIndex(
+        (task) => task.id === taskIdToDelete
+      );
+
+      if (taskIndex !== -1) {
+        taskList.splice(taskIndex, 1);
+      }
     },
   },
 });

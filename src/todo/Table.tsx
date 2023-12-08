@@ -1,21 +1,30 @@
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import ButtonCircle from "../components/ButtonCircle";
 import { RootState } from "../state/store";
-
+import { updateToDo, deleteToDo } from "../state/ToDoListSlice";
 interface Props {
   headers?: string[];
   onClick?: (item: any, action: string) => void;
 }
 
 const Table = ({ headers, onClick }: Props) => {
+  const dispatch = useDispatch();
+  const toDoList = useSelector((state: RootState) => state.toDo);
+  const lists = toDoList.task_list;
+
   const getId = (item: any, action: string) => {
-    if (onClick) {
-      onClick(item, action);
+    if (action === "edit") {
+      if (onClick) {
+        onClick(item, action);
+      }
+    } else if (action === "complete") {
+      const updatedItem = { ...item, status: "COMPLETED" };
+      dispatch(updateToDo(updatedItem));
+    } else {
+      dispatch(deleteToDo(item));
     }
   };
 
-  const toDoList = useSelector((state: RootState) => state.toDo);
-  const lists = toDoList.task_list;
   return (
     <table className="table mb-4">
       <thead>
