@@ -61,7 +61,7 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
                   <ButtonCircle
                     title="Edit"
                     icon="edit"
-                    color="btn-primary"
+                    color="btn-info"
                     onClick={() => getId(item, "edit")}
                   />
                 </div>
@@ -69,7 +69,7 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
                   <ButtonCircle
                     title="Complete"
                     icon="complete"
-                    color="btn-primary"
+                    color="btn-success"
                     onClick={() => getId(item, "complete")}
                   />
                 </div>
