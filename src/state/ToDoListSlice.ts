@@ -54,9 +54,14 @@ const toDoTaskListSlice = createSlice({
         taskList.splice(taskIndex, 1);
       }
     },
+
+    createBulkData: (state, actions) => {
+      state.task_list?.push(actions.payload);
+    },
   },
 });
 
-export const { createToDo, updateToDo, deleteToDo } = toDoTaskListSlice.actions;
+export const { createToDo, updateToDo, deleteToDo, createBulkData } =
+  toDoTaskListSlice.actions;
 
 export default toDoTaskListSlice.reducer;

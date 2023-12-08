@@ -1,3 +1,5 @@
+import moment from "moment";
+
 interface CallAPI {
   path?: string;
   method?: string;
@@ -52,4 +54,36 @@ export const isEmptyOrNot = (value: any): boolean => {
   return (
     value !== undefined && value !== null && value.toString().trim() !== ""
   );
+};
+
+export const ApiDataConvertToDoApp = (arrayObj: {}[]) => {
+  const currentDateAndTime = moment();
+  const formattedDate = currentDateAndTime.format("YYYY-MM-DD");
+  const formattedTime = currentDateAndTime.format("HH:mm:ss");
+  let tempDataList: any[] = [];
+  let tempObj: any;
+  arrayObj.forEach((indexData: any) => {
+    tempObj = {
+      id: getRandomInt(1000, 9999),
+      to_do_desc: indexData.title,
+      username: indexData.userId.toString(),
+      dueDate: formattedDate,
+      dueTime: formattedTime,
+    };
+    if (indexData.completed) {
+      tempObj = {
+        ...tempObj,
+        status: "COMPLETED",
+      };
+    } else {
+      tempObj = {
+        ...tempObj,
+        status: "NOT_START",
+      };
+    }
+
+    tempDataList.push(tempObj);
+  });
+  const firstTenRecords: any[] = tempDataList.slice(0, 3);
+  return firstTenRecords;
 };

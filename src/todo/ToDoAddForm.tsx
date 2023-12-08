@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { createToDo, updateToDo } from "../state/ToDoListSlice";
+import { createToDo, updateToDo, createBulkData } from "../state/ToDoListSlice";
+import { getAllToDoList } from "../controllers/ToDoListApiController";
 
 import Button from "../components/Button";
 import FormInput from "../components/FormInput";
@@ -43,6 +44,8 @@ const ToDoForm = ({
     dueDate: "",
     dueTime: "",
   });
+
+  const [isDataFetched, setIsDataFetched] = useState(false);
 
   const setCreateFormData = (fieldName: string, value: string | boolean) => {
     setFormData((prevData) => {
@@ -150,7 +153,22 @@ const ToDoForm = ({
       setCreateFormData("dueTime", list?.dueTime);
       setCreateFormData("statue", list?.status);
     }
-  }, [list]);
+
+    if (!isDataFetched) {
+      const temp = getAllToDoList();
+      temp
+        .then((data) => {
+          data.forEach((task) => {
+            dispatch(createBulkData(task));
+          });
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+
+      setIsDataFetched(true);
+    }
+  }, [list, dispatch, isDataFetched]);
 
   return (
     <div style={{ display: "block", position: "initial" }}>

@@ -1,4 +1,8 @@
-import { callAPI, formatResponseFromAPI } from "../utils/Helper";
+import {
+  callAPI,
+  formatResponseFromAPI,
+  ApiDataConvertToDoApp,
+} from "../utils/Helper";
 
 const baseURL = "https://jsonplaceholder.typicode.com/todos";
 
@@ -9,7 +13,12 @@ export async function getAllToDoList() {
       method: "GET",
       fetchOptions: {},
     });
-    return formatResponseFromAPI(response);
+    const data = await formatResponseFromAPI(response);
+    if (data.success) {
+      return ApiDataConvertToDoApp(data.data);
+    } else {
+      throw new Error(` Error! : ${data.error}`);
+    }
   } catch (error) {
     throw new Error(` Error! : ${error}`);
   }
