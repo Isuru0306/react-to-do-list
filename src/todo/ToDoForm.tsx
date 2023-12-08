@@ -33,7 +33,7 @@ const ToDoForm = ({
     username: "",
     dueDate: "",
     dueTime: "",
-    status: "NO_START",
+    status: "NOT_START",
   });
 
   const [taskId, setTaskId] = useState(0);
