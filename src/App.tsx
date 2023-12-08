@@ -1,13 +1,14 @@
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useState } from "react";
-
 import Button from "./components/Button";
 import FormInput from "./components/FormInput";
 import Table from "./todo/Table";
 import ToDoAddForm from "./todo/ToDoAddForm";
 function App() {
   const [showCreateModal, setShowCreateModal] = useState(false);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [item, setItem] = useState({});
 
   const showCreateListModal = () => {
     setShowCreateModal(true);
@@ -15,10 +16,19 @@ function App() {
 
   const handleCloseModal = () => {
     setShowCreateModal(false);
+    setShowEditModal(false);
   };
 
   const handleSaveModal = () => {
     setShowCreateModal(false);
+    setShowEditModal(false);
+  };
+
+  const tableAction = (item: any, action: string) => {
+    if (action === "edit") {
+      setItem(item);
+      setShowEditModal(true);
+    }
   };
 
   return (
@@ -26,6 +36,14 @@ function App() {
       <ToDoAddForm
         show={showCreateModal}
         modalHeading={"Add To Do List"}
+        onHide={handleCloseModal}
+        onSave={handleSaveModal}
+      />
+      <ToDoAddForm
+        show={showEditModal}
+        modalHeading={"Edit To Do List"}
+        list={item}
+        action={"EDIT"}
         onHide={handleCloseModal}
         onSave={handleSaveModal}
       />
@@ -63,6 +81,9 @@ function App() {
                       "Time",
                       "Actions",
                     ]}
+                    onClick={(item, action) => {
+                      tableAction(item, action);
+                    }}
                   />
                 </div>
               </div>

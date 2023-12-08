@@ -38,9 +38,12 @@ export async function formatResponseFromAPI(response: Response) {
   return returnData;
 }
 
-
-export function getRandomInt(min:number, max:number) {
+export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-
+export const isEmptyObject = (
+  obj: Record<string, any> | null | undefined
+): boolean => {
+  return obj !== null && obj !== undefined && Object.keys(obj).length === 0;
+};

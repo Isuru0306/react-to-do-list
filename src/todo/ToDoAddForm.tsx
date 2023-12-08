@@ -1,31 +1,41 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { createToDo } from "../state/ToDoListSlice";
+import { createToDo, updateToDo } from "../state/ToDoListSlice";
 
 import Button from "../components/Button";
 import FormInput from "../components/FormInput";
 import FormLabel from "../components/FormLabel";
-import FormCheckBox from "../components/FormCheckBox";
-import { getRandomInt } from "../utils/Helper";
+import FormSelect from "../components/FormSelect";
+import { getRandomInt, isEmptyObject } from "../utils/Helper";
 
 interface Props {
   show?: boolean;
   modalHeading?: string;
+  list?: any;
+  action?: string;
   onHide?: () => void;
   onSave?: () => void;
 }
 
-const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
+const ToDoForm = ({
+  show = false,
+  modalHeading,
+  list,
+  onHide,
+  onSave,
+  action = "ADD",
+}: Props) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
     to_do_desc: "",
     username: "",
     dueDate: "",
     dueTime: "",
-    status: "",
-    started: false,
+    status: "NO_START",
   });
+
+  const [taskId, setTaskId] = useState(0);
 
   const [errors, setErrors] = useState({
     to_do_desc: "",
@@ -50,13 +60,6 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
   };
 
   const handleChange = (fieldName: string, value: string | boolean) => {
-    if (fieldName === "started") {
-      if (value) {
-        setCreateFormData("status", "START");
-      } else {
-        setCreateFormData("status", "NO START");
-      }
-    }
     setCreateFormData(fieldName, value);
   };
 
@@ -97,12 +100,21 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
 
   const OnSubmit = () => {
     if (validateForm()) {
-      dispatch(
-        createToDo({
-          id: getRandomInt(1000, 9999),
-          ...formData,
-        })
-      );
+      if (taskId !== 0) {
+        dispatch(
+          updateToDo({
+            id: taskId,
+            ...formData,
+          })
+        );
+      } else {
+        dispatch(
+          createToDo({
+            id: getRandomInt(1000, 9999),
+            ...formData,
+          })
+        );
+      }
 
       if (onSave) {
         onSave();
@@ -116,6 +128,18 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
       }
     }
   };
+
+  useEffect(() => {
+    const isEmpty: boolean = isEmptyObject(list);
+    if (!isEmpty) {
+      setTaskId(list?.id || 0);
+      setCreateFormData("to_do_desc", list?.to_do_desc);
+      setCreateFormData("username", list?.username);
+      setCreateFormData("dueDate", list?.dueDate);
+      setCreateFormData("dueTime", list?.dueTime);
+      setCreateFormData("statue", list?.status);
+    }
+  }, [list]);
 
   return (
     <div style={{ display: "block", position: "initial" }}>
@@ -131,6 +155,7 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
                   <div className="text-danger">{errors.to_do_desc}</div>
                   <FormInput
                     type="text"
+                    value={formData?.to_do_desc || ""}
                     onChange={(value) => handleChange("to_do_desc", value)}
                   />
                   <FormLabel text={"Enter description"} />
@@ -142,6 +167,7 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
                   <div className="text-danger">{errors.username}</div>
                   <FormInput
                     type="text"
+                    value={formData?.username || ""}
                     onChange={(value) => handleChange("username", value)}
                   />
                   <FormLabel text={"Enter User name"} />
@@ -155,6 +181,7 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
                   <div className="text-danger">{errors.dueDate}</div>
                   <FormInput
                     type="date"
+                    value={formData?.dueDate || ""}
                     onChange={(value) => handleChange("dueDate", value)}
                   />
                   <FormLabel text={"Select a due date"} />
@@ -166,6 +193,7 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
                   <div className="text-danger">{errors.dueTime}</div>
                   <FormInput
                     type="time"
+                    value={formData?.dueTime || ""}
                     onChange={(value) => handleChange("dueTime", value)}
                   />
                   <FormLabel text={"Select a due Time"} />
@@ -173,12 +201,15 @@ const ToDoForm = ({ show = false, modalHeading, onHide, onSave }: Props) => {
               </div>
             </div>
 
-            <div className="form-check d-flex justify-content-center mb-4">
-              <FormCheckBox
-                status={false}
-                onChange={(value) => handleChange("started", value)}
-              />
-              <FormLabel text={"Start"} />
+            <div className="form-check d-flex justify-content-center mb-5">
+              <div>
+                <FormSelect
+                  value={formData?.status}
+                  onChange={(value) => {
+                    handleChange("status", value);
+                  }}
+                />
+              </div>
             </div>
           </form>
         </Modal.Body>

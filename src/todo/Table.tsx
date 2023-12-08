@@ -4,9 +4,16 @@ import { RootState } from "../state/store";
 
 interface Props {
   headers?: string[];
+  onClick?: (item: any, action: string) => void;
 }
 
-const Table = ({ headers }: Props) => {
+const Table = ({ headers, onClick }: Props) => {
+  const getId = (item: any, action: string) => {
+    if (onClick) {
+      onClick(item, action);
+    }
+  };
+
   const toDoList = useSelector((state: RootState) => state.toDo);
   const lists = toDoList.task_list;
   return (
@@ -39,13 +46,19 @@ const Table = ({ headers }: Props) => {
             <td>
               <div className="row">
                 <div className="col-4 text-center">
-                  <ButtonCircle title="Edit" icon="edit" color="btn-primary" />
+                  <ButtonCircle
+                    title="Edit"
+                    icon="edit"
+                    color="btn-primary"
+                    onClick={() => getId(item, "edit")}
+                  />
                 </div>
                 <div className="col-4 text-center">
                   <ButtonCircle
                     title="Complete"
                     icon="complete"
                     color="btn-primary"
+                    onClick={() => getId(item, "complete")}
                   />
                 </div>
                 <div className="col-4 text-center">
@@ -53,6 +66,7 @@ const Table = ({ headers }: Props) => {
                     title="Delete"
                     icon="delete"
                     color="btn-danger"
+                    onClick={() => getId(item.id, "delete")}
                   />
                 </div>
               </div>

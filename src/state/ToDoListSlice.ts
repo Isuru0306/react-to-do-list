@@ -19,8 +19,22 @@ const toDoTaskListSlice = createSlice({
     createToDo: (state, actions) => {
       state.task_list?.push(actions.payload);
     },
-    updateToDo: (state) => {
-      console.log("updateToDo");
+    updateToDo: (state, actions) => {
+      const updatedTask = actions.payload;
+      const taskList = state.task_list as {
+        id: number;
+        to_do_desc?: string;
+        status?: string;
+        username?: string;
+        dueDate?: string;
+        dueTime?: string;
+      }[];
+      const taskIndex = taskList.findIndex(
+        (task) => task.id === updatedTask.id
+      );
+      if (taskIndex !== -1) {
+        taskList[taskIndex] = updatedTask;
+      }
     },
     deleteToDo: (state) => {
       console.log("deleteToDo");
