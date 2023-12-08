@@ -2,10 +2,11 @@ import { useState, ChangeEvent, useEffect } from "react";
 
 interface Props {
   value?: string;
+  options?: string[];
   onChange?: (value: string) => void;
 }
 
-const FormSelect = ({ value = "NOT_START", onChange }: Props) => {
+const FormSelect = ({ value = "NOT_START", onChange, options }: Props) => {
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -29,9 +30,11 @@ const FormSelect = ({ value = "NOT_START", onChange }: Props) => {
         value={selectedOption}
         onChange={handleSelectChange}
       >
-        <option value="NOT_START">NOT_START</option>
-        <option value="IN_PROGRESS">IN_PROGRESS</option>
-        <option value="COMPLETED">COMPLETED</option>
+        {options?.map((op) => (
+          <option key={op} value={op}>
+            {op}
+          </option>
+        ))}
       </select>
     </div>
   );

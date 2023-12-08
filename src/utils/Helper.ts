@@ -47,3 +47,9 @@ export const isEmptyObject = (
 ): boolean => {
   return obj !== null && obj !== undefined && Object.keys(obj).length === 0;
 };
+
+export const isEmptyOrNot = (value: any): boolean => {
+  return (
+    value !== undefined && value !== null && value.toString().trim() !== ""
+  );
+};

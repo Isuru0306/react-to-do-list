@@ -4,10 +4,13 @@ import { RootState } from "../state/store";
 import { updateToDo, deleteToDo } from "../state/ToDoListSlice";
 interface Props {
   headers?: string[];
+  searchValue?: any;
   onClick?: (item: any, action: string) => void;
 }
 
-const Table = ({ headers, onClick }: Props) => {
+const Table = ({ headers, onClick, searchValue }: Props) => {
+  console.log(searchValue);
+
   const dispatch = useDispatch();
   const toDoList = useSelector((state: RootState) => state.toDo);
   const lists = toDoList.task_list;

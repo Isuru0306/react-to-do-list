@@ -7,7 +7,7 @@ import Button from "../components/Button";
 import FormInput from "../components/FormInput";
 import FormLabel from "../components/FormLabel";
 import FormSelect from "../components/FormSelect";
-import { getRandomInt, isEmptyObject } from "../utils/Helper";
+import { getRandomInt, isEmptyObject, isEmptyOrNot } from "../utils/Helper";
 
 interface Props {
   show?: boolean;
@@ -66,28 +66,28 @@ const ToDoForm = ({
   const validateForm = () => {
     let formIsValid = true;
     const newErrors = { ...errors };
-    if (formData.to_do_desc.trim() === "") {
+    if (!isEmptyOrNot(formData.to_do_desc)) {
       formIsValid = false;
       newErrors.to_do_desc = "Description is required";
     } else {
       newErrors.to_do_desc = "";
     }
 
-    if (formData.username.trim() === "") {
+    if (!isEmptyOrNot(formData.username)) {
       formIsValid = false;
       newErrors.username = "username is required";
     } else {
       newErrors.username = "";
     }
 
-    if (formData.dueDate === "") {
+    if (!isEmptyOrNot(formData.dueDate)) {
       formIsValid = false;
       newErrors.dueDate = "Due Date is required";
     } else {
       newErrors.dueDate = "";
     }
 
-    if (formData.dueTime === "") {
+    if (!isEmptyOrNot(formData.dueTime)) {
       formIsValid = false;
       newErrors.dueTime = "Due Time is required";
     } else {
@@ -129,6 +129,17 @@ const ToDoForm = ({
     }
   };
 
+  const clearFields = () => {
+    if (onHide) {
+      onHide();
+      setCreateFormData("to_do_desc", "");
+      setCreateFormData("username", "");
+      setCreateFormData("dueDate", "");
+      setCreateFormData("dueTime", "");
+      setCreateFormData("statue", "");
+    }
+  };
+
   useEffect(() => {
     const isEmpty: boolean = isEmptyObject(list);
     if (!isEmpty) {
@@ -144,7 +155,7 @@ const ToDoForm = ({
   return (
     <div style={{ display: "block", position: "initial" }}>
       <Modal show={show} onHide={onHide} centered size="lg">
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title>{modalHeading}</Modal.Title>
         </Modal.Header>
         <Modal.Body>
@@ -152,25 +163,26 @@ const ToDoForm = ({
             <div className="row mb-4">
               <div className="col">
                 <div data-mdb-input-init className="form-outline">
-                  <div className="text-danger">{errors.to_do_desc}</div>
+                  <FormLabel text={"Enter description"} />
+
                   <FormInput
                     type="text"
                     value={formData?.to_do_desc || ""}
                     onChange={(value) => handleChange("to_do_desc", value)}
                   />
-                  <FormLabel text={"Enter description"} />
+                  <div className="text-danger">{errors.to_do_desc}</div>
                 </div>
               </div>
 
               <div className="col">
                 <div data-mdb-input-init className="form-outline">
-                  <div className="text-danger">{errors.username}</div>
+                  <FormLabel text={"Enter User name"} />
                   <FormInput
                     type="text"
                     value={formData?.username || ""}
                     onChange={(value) => handleChange("username", value)}
                   />
-                  <FormLabel text={"Enter User name"} />
+                  <div className="text-danger">{errors.username}</div>
                 </div>
               </div>
             </div>
@@ -178,43 +190,53 @@ const ToDoForm = ({
             <div className="row mb-4">
               <div className="col">
                 <div data-mdb-input-init className="form-outline">
-                  <div className="text-danger">{errors.dueDate}</div>
+                  <FormLabel text={"Select a due date"} />
                   <FormInput
                     type="date"
                     value={formData?.dueDate || ""}
                     onChange={(value) => handleChange("dueDate", value)}
                   />
-                  <FormLabel text={"Select a due date"} />
+                  <div className="text-danger">{errors.dueDate}</div>
                 </div>
               </div>
 
               <div className="col">
                 <div data-mdb-input-init className="form-outline">
-                  <div className="text-danger">{errors.dueTime}</div>
+                  <FormLabel text={"Select a due Time"} />
+
                   <FormInput
                     type="time"
                     value={formData?.dueTime || ""}
                     onChange={(value) => handleChange("dueTime", value)}
                   />
-                  <FormLabel text={"Select a due Time"} />
+                  <div className="text-danger">{errors.dueTime}</div>
                 </div>
               </div>
             </div>
 
             <div className="form-check d-flex justify-content-center mb-5">
               <div>
-                <FormSelect
-                  value={formData?.status}
-                  onChange={(value) => {
-                    handleChange("status", value);
-                  }}
-                />
+                {action !== "ADD" ? (
+                  <FormSelect
+                    options={["NOT_START", "IN_PROGRESS", "COMPLETED"]}
+                    value={formData?.status}
+                    onChange={(value) => {
+                      handleChange("status", value);
+                    }}
+                  />
+                ) : (
+                  ""
+                )}
               </div>
             </div>
           </form>
         </Modal.Body>
         <Modal.Footer>
-          <Button text="Close" color="btn btn-secondary" onClick={onHide} />
+          <Button
+            text="Close"
+            color="btn btn-secondary"
+            onClick={clearFields}
+          />
           <Button text="Save" color="btn btn-primary" onClick={OnSubmit} />
         </Modal.Footer>
       </Modal>
