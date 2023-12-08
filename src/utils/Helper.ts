@@ -59,7 +59,7 @@ export const isEmptyOrNot = (value: any): boolean => {
 export const ApiDataConvertToDoApp = (arrayObj: {}[]) => {
   const currentDateAndTime = moment();
   const formattedDate = currentDateAndTime.format("YYYY-MM-DD");
-  const formattedTime = currentDateAndTime.format("HH:mm:ss");
+  const formattedTime = currentDateAndTime.format("HH:mm");
   let tempDataList: any[] = [];
   let tempObj: any;
   arrayObj.forEach((indexData: any) => {

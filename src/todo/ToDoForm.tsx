@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal } from "react-bootstrap";
 import { useDispatch } from "react-redux";
-import { createToDo, updateToDo, createBulkData } from "../state/ToDoListSlice";
+import { createToDo, updateToDo } from "../state/ToDoListSlice";
 import { getAllToDoList } from "../controllers/ToDoListApiController";
 
 import Button from "../components/Button";
@@ -159,7 +159,7 @@ const ToDoForm = ({
       temp
         .then((data) => {
           data.forEach((task) => {
-            dispatch(createBulkData(task));
+            dispatch(createToDo(task));
           });
         })
         .catch((error) => {

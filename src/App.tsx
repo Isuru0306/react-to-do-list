@@ -3,8 +3,8 @@ import "bootstrap/dist/js/bootstrap.bundle.min.js";
 import { useState } from "react";
 import Button from "./components/Button";
 import FormInput from "./components/FormInput";
-import Table from "./todo/Table";
-import ToDoAddForm from "./todo/ToDoAddForm";
+import Table from "./todo/ToDoTable";
+import ToDoAddForm from "./todo/ToDoForm";
 import FormSelect from "./components/FormSelect";
 
 function App() {
