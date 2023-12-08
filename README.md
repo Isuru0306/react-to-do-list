@@ -20,6 +20,14 @@ npm i or  npm install
 npm run start #Run development server
 ```
 
+## User Instructions
+
+<ul>
+    <li>Initially loaded dummy data with 6 records.</li>
+    <li>Users can create, edit, update, and delete tasks.</li>
+    <li>The task can be marked as "in progress" or "complete".</li>
+</ul>
+
 ## Redux Toolkit's role
 
 ### Centralized task management:
