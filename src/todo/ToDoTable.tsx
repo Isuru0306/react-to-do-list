@@ -2,6 +2,7 @@ import { useSelector, useDispatch } from "react-redux";
 import ButtonCircle from "../components/ButtonCircle";
 import { RootState } from "../state/store";
 import { updateToDo, deleteToDo } from "../state/ToDoListSlice";
+import { search } from "../utils/Helper";
 interface Props {
   headers?: string[];
   searchValue?: any;
@@ -9,11 +10,23 @@ interface Props {
 }
 
 const Table = ({ headers, onClick, searchValue }: Props) => {
-  console.log(searchValue);
-
   const dispatch = useDispatch();
   const toDoList = useSelector((state: RootState) => state.toDo);
-  const lists = toDoList.task_list;
+  let lists = toDoList.task_list;
+
+  (() => {
+    if (searchValue.filter === "All Task") {
+      /***
+       * TO DO
+       * */
+    } else if (searchValue.filter === "Not Started Task") {
+      lists = search("status", "NOT_START", lists);
+    } else if (searchValue.filter === "In Progress Task") {
+      lists = search("status", "IN_PROGRESS", lists);
+    } else if (searchValue.filter === "Completed Task") {
+      lists = search("status", "COMPLETED", lists);
+    }
+  })();
 
   const getId = (item: any, action: string) => {
     if (action === "edit") {

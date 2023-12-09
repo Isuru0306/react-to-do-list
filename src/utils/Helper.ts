@@ -11,6 +11,11 @@ interface CallAPI {
   };
 }
 
+/**
+ *
+ * @param param0
+ * @returns
+ */
 export function callAPI({ path, method, fetchOptions }: CallAPI) {
   return fetch(`${path}`, {
     method,
@@ -21,6 +26,11 @@ export function callAPI({ path, method, fetchOptions }: CallAPI) {
   });
 }
 
+/**
+ *
+ * @param response
+ * @returns
+ */
 export async function formatResponseFromAPI(response: Response) {
   const { returnData }: CallAPI = {
     returnData: { success: false, data: [], error: [] },
@@ -40,9 +50,22 @@ export async function formatResponseFromAPI(response: Response) {
   return returnData;
 }
 
+/**
+ *
+ * @param min
+ * @param max
+ * @returns
+ */
+
 export function getRandomInt(min: number, max: number) {
   return Math.floor(Math.random() * (max - min + 1)) + min;
 }
+
+/**
+ *
+ * @param obj
+ * @returns
+ */
 
 export const isEmptyObject = (
   obj: Record<string, any> | null | undefined
@@ -50,12 +73,23 @@ export const isEmptyObject = (
   return obj !== null && obj !== undefined && Object.keys(obj).length === 0;
 };
 
+/**
+ *
+ * @param value
+ * @returns
+ */
+
 export const isEmptyOrNot = (value: any): boolean => {
   return (
     value !== undefined && value !== null && value.toString().trim() !== ""
   );
 };
 
+/**
+ *
+ * @param arrayObj
+ * @returns
+ */
 export const ApiDataConvertToDoApp = (arrayObj: {}[]) => {
   const currentDateAndTime = moment();
   const formattedDate = currentDateAndTime.format("YYYY-MM-DD");
@@ -86,4 +120,28 @@ export const ApiDataConvertToDoApp = (arrayObj: {}[]) => {
   });
   const firstTenRecords: any[] = tempDataList.slice(0, 3);
   return firstTenRecords;
+};
+
+/**
+ *
+ * @param key
+ * @param value
+ * @param dataSet
+ * @param searchValue
+ * @returns
+ */
+export const search = (
+  key: string,
+  value: any,
+  dataSet: any,
+  searchValue?: any
+) => {
+  //TO DO
+  let tempDataList: any[] = [];
+  dataSet.forEach((list: any) => {
+    if (list[key] === value) {
+      tempDataList.push(list);
+    }
+  });
+  return tempDataList;
 };
