@@ -147,6 +147,10 @@ export const search = (
   return tempDataList;
 };
 
+/**
+ *
+ * @param data
+ */
 export const storeDataInLocal = (data: any) => {
   if (localStorage.getItem("dataList") != null) {
     let localStorageData = localStorage.getItem("dataList");
@@ -174,6 +178,10 @@ export const storeDataInLocal = (data: any) => {
   }
 };
 
+/**
+ *
+ * @param id
+ */
 export const removeDataInLocal = (id: any) => {
   if (localStorage.getItem("dataList") != null) {
     let localStorageData = localStorage.getItem("dataList");

@@ -25,6 +25,7 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
   const toDoList = useSelector((state: RootState) => state.toDo);
   let lists = toDoList.task_list;
 
+  // Get local storage data
   (() => {
     if (localStorage.getItem("dataList") !== null) {
       const data = localStorage.getItem("dataList");
@@ -55,6 +56,7 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
     }
   })();
 
+  // Search
   (() => {
     if (searchValue.filter === "All Task") {
       /***
@@ -69,6 +71,7 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
     }
   })();
 
+  //Prioritize task
   const handleRowDoubleClick = (item: any) => {
     let obj = { ...item };
 
@@ -82,6 +85,7 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
     storeDataInLocal(obj);
   };
 
+  //Change status
   const getId = (item: any, action: string) => {
     if (action === "edit") {
       if (onClick) {
@@ -97,6 +101,7 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
     }
   };
 
+  // Drag and Drop functionality
   const onDragEnter = (index: number) => {
     let end = { ...changeOrder };
     end.end = index;

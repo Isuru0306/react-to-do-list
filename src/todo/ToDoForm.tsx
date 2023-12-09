@@ -74,6 +74,7 @@ const ToDoForm = ({
     setCreateFormData(fieldName, value);
   };
 
+  //Validation
   const validateForm = () => {
     let formIsValid = true;
     const newErrors = { ...errors };
@@ -109,6 +110,7 @@ const ToDoForm = ({
     return formIsValid;
   };
 
+  // Create and Edit
   const OnSubmit = () => {
     if (validateForm()) {
       if (taskId !== 0) {
