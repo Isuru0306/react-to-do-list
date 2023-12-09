@@ -28,6 +28,7 @@ npm run start #Run development server
     <li>The task can be marked as "in progress" or "complete".</li>
     <li>Users can search for tasks that are in progress, not started, or completed.</li>
     <li>Users can prioritize the task by double-clicking the row, and they can also remove prioritization by double-clicking the row again.</li>
+    <li>Users can change the order by dragging and dropping.</li>
 </ul>
 
 ## Redux Toolkit's role
