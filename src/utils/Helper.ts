@@ -119,7 +119,7 @@ export const ApiDataConvertToDoApp = (arrayObj: {}[]) => {
 
     tempDataList.push(tempObj);
   });
-  const firstTenRecords: any[] = tempDataList.slice(0, 1);
+  const firstTenRecords: any[] = tempDataList.slice(0, 5);
   return firstTenRecords;
 };
 
