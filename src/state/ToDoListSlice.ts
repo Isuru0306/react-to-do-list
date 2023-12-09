@@ -56,9 +56,28 @@ const toDoTaskListSlice = createSlice({
         taskList.splice(taskIndex, 1);
       }
     },
+
+    changeOder: (state, actions) => {
+      const orderIndexes = actions.payload;
+      const taskList = state.task_list as {
+        id: number;
+        to_do_desc?: string;
+        status?: string;
+        username?: string;
+        dueDate?: string;
+        dueTime?: string;
+        priority?: string;
+      }[];
+
+      const startIndexData = taskList[orderIndexes.start];
+      const endIndexData = taskList[orderIndexes.end];
+      taskList[orderIndexes.end] = startIndexData;
+      taskList[orderIndexes.start] = endIndexData;
+    },
   },
 });
 
-export const { createToDo, updateToDo, deleteToDo } = toDoTaskListSlice.actions;
+export const { createToDo, updateToDo, deleteToDo, changeOder } =
+  toDoTaskListSlice.actions;
 
 export default toDoTaskListSlice.reducer;

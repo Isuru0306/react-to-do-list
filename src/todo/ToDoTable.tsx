@@ -1,7 +1,13 @@
+import { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import ButtonCircle from "../components/ButtonCircle";
 import { RootState } from "../state/store";
-import { updateToDo, deleteToDo, createToDo } from "../state/ToDoListSlice";
+import {
+  updateToDo,
+  deleteToDo,
+  createToDo,
+  changeOder,
+} from "../state/ToDoListSlice";
 import { search, removeDataInLocal, storeDataInLocal } from "../utils/Helper";
 
 interface Props {
@@ -11,6 +17,10 @@ interface Props {
 }
 
 const Table = ({ headers, onClick, searchValue }: Props) => {
+  const [changeOrder, setChangeOrder] = useState({
+    start: -1,
+    end: -1,
+  });
   const dispatch = useDispatch();
   const toDoList = useSelector((state: RootState) => state.toDo);
   let lists = toDoList.task_list;
@@ -87,6 +97,28 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
     }
   };
 
+  const onDragEnter = (index: number) => {
+    let end = { ...changeOrder };
+    end.end = index;
+    setChangeOrder(end);
+  };
+
+  const onDrop = (index: number) => {
+    let start = { ...changeOrder };
+    start.start = index;
+    setChangeOrder(start);
+  };
+
+  useEffect(() => {
+    if (changeOrder.start !== -1 && changeOrder.end !== -1) {
+      dispatch(changeOder(changeOrder));
+      let temp = { ...changeOrder };
+      temp.end = -1;
+      temp.start = -1;
+      setChangeOrder(temp);
+    }
+  }, [changeOrder, dispatch]);
+
   return (
     <table className="table mb-4">
       <thead>
@@ -109,10 +141,14 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
         {lists?.map((item, index) => (
           <tr
             className={`text-center ${item.priority}`}
+            style={{ cursor: "pointer", userSelect: "none" }}
             key={index}
             onDoubleClick={() => {
               handleRowDoubleClick(item);
             }}
+            draggable
+            onDragEnter={() => onDragEnter(index)}
+            onDragEnd={() => onDrop(index)}
           >
             <th scope="row">{item.id}</th>
             <td>{item.to_do_desc}</td>
