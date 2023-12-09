@@ -6,6 +6,8 @@ import FormInput from "./components/FormInput";
 import Table from "./todo/ToDoTable";
 import ToDoAddForm from "./todo/ToDoForm";
 import FormSelect from "./components/FormSelect";
+import FormCheckBox from "./components/FormCheckBox";
+import FormLabel from "./components/FormLabel";
 
 function App() {
   const [showCreateModal, setShowCreateModal] = useState(false);
@@ -13,6 +15,7 @@ function App() {
   const [item, setItem] = useState({});
   const [searchValue, setSearchValue] = useState({});
   const [searchFilter, setSearchFilter] = useState("All Task");
+  const [fetchDummyData, setFetchDummyData] = useState(false);
 
   const showCreateListModal = () => {
     setShowCreateModal(true);
@@ -42,6 +45,7 @@ function App() {
         modalHeading={"Add To Do List"}
         onHide={handleCloseModal}
         onSave={handleSaveModal}
+        isFetchData={fetchDummyData}
       />
       <ToDoAddForm
         show={showEditModal}
@@ -50,7 +54,8 @@ function App() {
         action={"EDIT"}
         onHide={handleCloseModal}
         onSave={handleSaveModal}
-      />  
+        isFetchData={fetchDummyData}
+      />
       <section className="vh-100">
         <div className="container py-5 h-100">
           <div className="row d-flex justify-content-center align-items-center h-100">
@@ -59,6 +64,20 @@ function App() {
                 <div className="card-body p-4">
                   <h2 className="text-center my-3 pb-3">To Do List</h2>
                   <div className="row">
+                    <div className="col-12 form-check form-check-inline">
+                      {!fetchDummyData ? (
+                        <div>
+                          <FormCheckBox
+                            onChange={(value) => {
+                              setFetchDummyData(value);
+                            }}
+                          />
+                          <FormLabel text="Fetch dummy data" />
+                        </div>
+                      ) : (
+                        ""
+                      )}
+                    </div>
                     <div className="col-12 d-flex justify-content-end">
                       <Button
                         text="Create Task"

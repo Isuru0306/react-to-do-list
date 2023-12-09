@@ -118,7 +118,7 @@ export const ApiDataConvertToDoApp = (arrayObj: {}[]) => {
 
     tempDataList.push(tempObj);
   });
-  const firstTenRecords: any[] = tempDataList.slice(0, 3);
+  const firstTenRecords: any[] = tempDataList.slice(0, 1);
   return firstTenRecords;
 };
 
@@ -144,4 +144,47 @@ export const search = (
     }
   });
   return tempDataList;
+};
+
+export const storeDataInLocal = (data: any) => {
+  if (localStorage.getItem("dataList") != null) {
+    let localStorageData = localStorage.getItem("dataList");
+    if (localStorageData != null) {
+      localStorageData = JSON.parse(localStorageData);
+      if (Array.isArray(localStorageData)) {
+        let newObj = localStorageData;
+        let find = false;
+        localStorageData.forEach((item, index) => {
+          if (data.id === item.id) {
+            newObj[index] = data;
+            find = true;
+          }
+        });
+        if (find) {
+          localStorage.setItem("dataList", JSON.stringify(newObj));
+        } else {
+          newObj.push(data);
+          localStorage.setItem("dataList", JSON.stringify(newObj));
+        }
+      }
+    }
+  } else {
+    localStorage.setItem("dataList", JSON.stringify([data]));
+  }
+};
+
+export const removeDataInLocal = (id: any) => {
+  if (localStorage.getItem("dataList") != null) {
+    let localStorageData = localStorage.getItem("dataList");
+    if (localStorageData != null) {
+      localStorageData = JSON.parse(localStorageData);
+      if (Array.isArray(localStorageData)) {
+        const taskIndex = localStorageData.findIndex((task) => task.id === id);
+        if (taskIndex !== -1) {
+          localStorageData.splice(taskIndex, 1);
+          localStorage.setItem("dataList", JSON.stringify(localStorageData));
+        }
+      }
+    }
+  }
 };

@@ -1,8 +1,9 @@
 import { useSelector, useDispatch } from "react-redux";
 import ButtonCircle from "../components/ButtonCircle";
 import { RootState } from "../state/store";
-import { updateToDo, deleteToDo } from "../state/ToDoListSlice";
-import { search } from "../utils/Helper";
+import { updateToDo, deleteToDo, createToDo } from "../state/ToDoListSlice";
+import { search, removeDataInLocal, storeDataInLocal } from "../utils/Helper";
+
 interface Props {
   headers?: string[];
   searchValue?: any;
@@ -13,6 +14,36 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
   const dispatch = useDispatch();
   const toDoList = useSelector((state: RootState) => state.toDo);
   let lists = toDoList.task_list;
+
+  (() => {
+    if (localStorage.getItem("dataList") !== null) {
+      const data = localStorage.getItem("dataList");
+      if (data !== null) {
+        let localData = JSON.parse(data);
+        if (Array.isArray(localData)) {
+          if (lists !== null && lists !== undefined && lists.length !== 0) {
+            lists.forEach((task: any) => {
+              let id = localData.find((temp: any) => {
+                if (task.id === temp.id) {
+                  return task.id;
+                } else {
+                  return null;
+                }
+              });
+
+              if (id === null) {
+                dispatch(createToDo(task));
+              }
+            });
+          } else {
+            localData.forEach((temp: any) => {
+              dispatch(createToDo(temp));
+            });
+          }
+        }
+      }
+    }
+  })();
 
   (() => {
     if (searchValue.filter === "All Task") {
@@ -36,8 +67,10 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
     } else if (action === "complete") {
       const updatedItem = { ...item, status: "COMPLETED" };
       dispatch(updateToDo(updatedItem));
+      storeDataInLocal(updatedItem);
     } else {
       dispatch(deleteToDo(item));
+      removeDataInLocal(item);
     }
   };
 

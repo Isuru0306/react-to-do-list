@@ -8,13 +8,19 @@ import Button from "../components/Button";
 import FormInput from "../components/FormInput";
 import FormLabel from "../components/FormLabel";
 import FormSelect from "../components/FormSelect";
-import { getRandomInt, isEmptyObject, isEmptyOrNot } from "../utils/Helper";
+import {
+  getRandomInt,
+  isEmptyObject,
+  isEmptyOrNot,
+  storeDataInLocal,
+} from "../utils/Helper";
 
 interface Props {
   show?: boolean;
   modalHeading?: string;
   list?: any;
   action?: string;
+  isFetchData?: boolean;
   onHide?: () => void;
   onSave?: () => void;
 }
@@ -26,6 +32,7 @@ const ToDoForm = ({
   onHide,
   onSave,
   action = "ADD",
+  isFetchData,
 }: Props) => {
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({
@@ -104,19 +111,19 @@ const ToDoForm = ({
   const OnSubmit = () => {
     if (validateForm()) {
       if (taskId !== 0) {
-        dispatch(
-          updateToDo({
-            id: taskId,
-            ...formData,
-          })
-        );
+        let newData = {
+          id: taskId,
+          ...formData,
+        };
+        dispatch(updateToDo(newData));
+        storeDataInLocal(newData);
       } else {
-        dispatch(
-          createToDo({
-            id: getRandomInt(1000, 9999),
-            ...formData,
-          })
-        );
+        let editData = {
+          id: getRandomInt(1000, 9999),
+          ...formData,
+        };
+        dispatch(createToDo(editData));
+        storeDataInLocal(editData);
       }
 
       if (onSave) {
@@ -144,6 +151,7 @@ const ToDoForm = ({
   };
 
   useEffect(() => {
+ 
     const isEmpty: boolean = isEmptyObject(list);
     if (!isEmpty) {
       setTaskId(list?.id || 0);
@@ -154,12 +162,13 @@ const ToDoForm = ({
       setCreateFormData("statue", list?.status);
     }
 
-    if (!isDataFetched) {
+    if (!isDataFetched && isFetchData) {
       const temp = getAllToDoList();
       temp
         .then((data) => {
           data.forEach((task) => {
             dispatch(createToDo(task));
+            storeDataInLocal(task);
           });
         })
         .catch((error) => {
@@ -168,7 +177,7 @@ const ToDoForm = ({
 
       setIsDataFetched(true);
     }
-  }, [list, dispatch, isDataFetched]);
+  }, [list, dispatch, isDataFetched, isFetchData]);
 
   return (
     <div style={{ display: "block", position: "initial" }}>
