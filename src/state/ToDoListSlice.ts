@@ -7,6 +7,7 @@ interface TaskList {
     username?: string;
     dueDate?: string;
     dueTime?: string;
+    priority?: string;
   }[];
 }
 
@@ -28,6 +29,7 @@ const toDoTaskListSlice = createSlice({
         username?: string;
         dueDate?: string;
         dueTime?: string;
+        priority?: string;
       }[];
       const taskIndex = taskList.findIndex(
         (task) => task.id === updatedTask.id
@@ -57,7 +59,6 @@ const toDoTaskListSlice = createSlice({
   },
 });
 
-export const { createToDo, updateToDo, deleteToDo } =
-  toDoTaskListSlice.actions;
+export const { createToDo, updateToDo, deleteToDo } = toDoTaskListSlice.actions;
 
 export default toDoTaskListSlice.reducer;

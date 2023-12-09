@@ -41,6 +41,7 @@ const ToDoForm = ({
     dueDate: "",
     dueTime: "",
     status: "NOT_START",
+    priority: "",
   });
 
   const [taskId, setTaskId] = useState(0);
@@ -151,7 +152,6 @@ const ToDoForm = ({
   };
 
   useEffect(() => {
- 
     const isEmpty: boolean = isEmptyObject(list);
     if (!isEmpty) {
       setTaskId(list?.id || 0);

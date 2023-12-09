@@ -103,6 +103,7 @@ export const ApiDataConvertToDoApp = (arrayObj: {}[]) => {
       username: indexData.userId.toString(),
       dueDate: formattedDate,
       dueTime: formattedTime,
+      priority: "",
     };
     if (indexData.completed) {
       tempObj = {

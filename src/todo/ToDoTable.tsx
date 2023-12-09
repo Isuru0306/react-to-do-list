@@ -59,6 +59,19 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
     }
   })();
 
+  const handleRowDoubleClick = (item: any) => {
+    let obj = { ...item };
+
+    if (obj?.priority === "") {
+      obj.priority = "table-primary";
+    } else {
+      obj.priority = "";
+    }
+
+    dispatch(updateToDo(obj));
+    storeDataInLocal(obj);
+  };
+
   const getId = (item: any, action: string) => {
     if (action === "edit") {
       if (onClick) {
@@ -94,7 +107,13 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
           </tr>
         )}
         {lists?.map((item, index) => (
-          <tr className="text-center" key={index}>
+          <tr
+            className={`text-center ${item.priority}`}
+            key={index}
+            onDoubleClick={() => {
+              handleRowDoubleClick(item);
+            }}
+          >
             <th scope="row">{item.id}</th>
             <td>{item.to_do_desc}</td>
             <td>{item.status}</td>
