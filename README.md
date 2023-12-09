@@ -27,6 +27,7 @@ npm run start #Run development server
     <li>Users can create, edit, update, and delete tasks.</li>
     <li>The task can be marked as "in progress" or "complete".</li>
     <li>Users can search for tasks that are in progress, not started, or completed.</li>
+    <li>Users can prioritize the task by double-clicking the row, and they can also remove prioritization by double-clicking the row again.</li>
 </ul>
 
 ## Redux Toolkit's role
