@@ -59,15 +59,13 @@ const Table = ({ headers, onClick, searchValue }: Props) => {
   // Search
   (() => {
     if (searchValue.filter === "All Task") {
-      /***
-       * TO DO
-       * */
+      lists = search("", "", lists, searchValue.column, searchValue.search);
     } else if (searchValue.filter === "Not Started Task") {
-      lists = search("status", "NOT_START", lists);
+      lists = search("status", "NOT_START", lists, searchValue.column, searchValue.search);
     } else if (searchValue.filter === "In Progress Task") {
-      lists = search("status", "IN_PROGRESS", lists);
+      lists = search("status", "IN_PROGRESS", lists, searchValue.column, searchValue.search);
     } else if (searchValue.filter === "Completed Task") {
-      lists = search("status", "COMPLETED", lists);
+      lists = search("status", "COMPLETED", lists, searchValue.column, searchValue.search);
     }
   })();
 

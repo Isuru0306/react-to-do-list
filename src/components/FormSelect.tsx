@@ -3,10 +3,11 @@ import { useState, ChangeEvent, useEffect } from "react";
 interface Props {
   value?: string;
   options?: string[];
+  id?: string;
   onChange?: (value: string) => void;
 }
 
-const FormSelect = ({ value = "NOT_START", onChange, options }: Props) => {
+const FormSelect = ({ value = "NOT_START", onChange, options, id }: Props) => {
   const [selectedOption, setSelectedOption] = useState("");
 
   const handleSelectChange = (event: ChangeEvent<HTMLSelectElement>) => {
@@ -25,7 +26,7 @@ const FormSelect = ({ value = "NOT_START", onChange, options }: Props) => {
     <div>
       <select
         className="form-select"
-        id="selectOption"
+        id={id}
         name="selectOption"
         value={selectedOption}
         onChange={handleSelectChange}

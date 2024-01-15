@@ -15,6 +15,7 @@ function App() {
   const [item, setItem] = useState({});
   const [searchValue, setSearchValue] = useState({});
   const [searchFilter, setSearchFilter] = useState("All Task");
+  const [searchColum, setSearchColumn] = useState("No");
   const [fetchDummyData, setFetchDummyData] = useState(false);
 
   const showCreateListModal = () => {
@@ -99,6 +100,18 @@ function App() {
                         onChange={(value) => setSearchFilter(value)}
                       />
                     </div>
+                    <div className="col-10 col-lg-auto">
+                      <FormSelect
+                        options={[
+                          "No",
+                          "Todo item",
+                          "Status",
+                          "Username",
+                          "Date",
+                        ]}
+                        onChange={(value) => setSearchColumn(value)}
+                      />
+                    </div>
 
                     <div className="col-12">
                       <div className="form-outline">
@@ -123,6 +136,7 @@ function App() {
                     searchValue={{
                       search: searchValue,
                       filter: searchFilter,
+                      column: searchColum,
                     }}
                     onClick={(item, action) => {
                       tableAction(item, action);

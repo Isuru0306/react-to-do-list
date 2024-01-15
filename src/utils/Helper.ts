@@ -135,13 +135,49 @@ export const search = (
   key: string,
   value: any,
   dataSet: any,
+  column?: any,
   searchValue?: any
 ) => {
-  //TO DO
+  let prop = (column: any) => {
+    switch (column) {
+      case "No":
+        return "id";
+      case "Todo item":
+        return "to_do_desc";
+      case "Status":
+        return "status";
+      case "Username":
+        return "username";
+      case "Date":
+        return "dueDate";
+      default:
+        return null;
+    }
+  };
+
   let tempDataList: any[] = [];
   dataSet.forEach((list: any) => {
-    if (list[key] === value) {
-      tempDataList.push(list);
+    let propKey = prop(column);
+    if (key === "") {
+      if (propKey !== null && !isEmptyObject(searchValue)) {
+        let numberString = list[propKey].toString().toLowerCase();
+        if (numberString.includes(searchValue.toLowerCase())) {
+          tempDataList.push(list);
+        }
+      } else {
+        tempDataList.push(list);
+      }
+    } else {
+      if (list[key] === value) {
+        if (propKey !== null && !isEmptyObject(searchValue)) {
+          let numberString = list[propKey].toString().toLowerCase();
+          if (numberString.includes(searchValue.toLowerCase())) {
+            tempDataList.push(list);
+          }
+        } else {
+          tempDataList.push(list);
+        }
+      }
     }
   });
   return tempDataList;
